@@ -1,40 +1,39 @@
-# 🔍 Review Analysis Bot (JSON Schema Version)
+# Review Analysis (JSON Schema)
 
-This Streamlit app uses **OpenAI GPT-4 + LangChain** to break down any written review into structured insights such as key themes, sentiment, pros and cons, and a summary — all validated using a **custom JSON schema**.
+A Streamlit app that turns a free-text review into structured fields defined by a JSON Schema.
 
-🔗 **Live App**: [https://reviewanalysisbyabhishek.streamlit.app/](https://reviewanalysisbyabhishek.streamlit.app/)
+## Why this exists
+Third of three versions exploring LangChain structured output. This one uses a plain JSON Schema dictionary instead of a Pydantic model. See also [review-analysis](https://github.com/abhijha8287/review-analysis) and [reviewanalysis2](https://github.com/abhijha8287/reviewanalysis2).
 
-> ⚠️ If the app is inactive or sleeping, click once or refresh to wake it. Streamlit apps sleep after inactivity.
+## What it does
+- Takes a product or service review
+- Returns themes, summary, sentiment, pros, cons and reviewer name
+- Restricts sentiment to `pos` or `neg` with an enum and treats some fields as optional
 
----
+## Project structure
+```
+reviewanalysisjson/
+├── jsonschema.py     Streamlit app and JSON schema
+└── requirements.txt  Python dependencies
+```
 
-## 🚀 What's New in This Version?
+## Getting started
+Requirements: Python 3.10+, an OpenAI API key.
+```bash
+git clone https://github.com/abhijha8287/reviewanalysisjson.git
+cd reviewanalysisjson
+pip install -r requirements.txt streamlit
+mkdir -p .streamlit && echo 'api_key = "sk-..."' > .streamlit/secrets.toml
+streamlit run jsonschema.py
+```
 
-✅ **JSON Schema for Structured Output**  
-- The app uses a **dictionary-based JSON schema** instead of `pydantic.BaseModel` to define the output format.
-- Offers flexibility without requiring additional typing libraries.
+## Configuration
+| Variable | Purpose |
+|:--|:--|
+| `api_key` in `.streamlit/secrets.toml` | OpenAI API key |
 
-✅ **Enum Constraint for Sentiment**  
-- The sentiment field only allows `"pos"` or `"neg"` using `enum`.
+## Tech stack
+Python, LangChain, OpenAI GPT-4, Streamlit
 
-✅ **Optional Fields Handled Properly**  
-- Uses `type: ["string", "null"]` and `["array", "null"]` for optional fields like `name`, `pros`, and `cons`.
-
-✅ **Minimal Dependencies**  
-- No need to import and define Python classes — pure dictionary-based validation for those who prefer lighter codebases.
-
----
-
-## 💡 What This App Does
-
-Paste any review into the input box, and the bot will return:
-
-- 🎯 **Sentiment**: `"pos"` or `"neg"` (positive or negative)
-- 🔍 **Key Themes**: List of discussed topics
-- ✅ **Pros** *(optional)*: Advantages/strengths
-- ❌ **Cons** *(optional)*: Drawbacks
-- 🧾 **Summary**: Short human-like explanation
-- 🧑 **Name** *(optional)*: Reviewer's name if available
-
-
-
+## Notes
+Live demo: https://reviewanalysisbyabhishek.streamlit.app (on the free Streamlit tier it may take a few seconds to wake up). `requirements.txt` lists more LangChain integrations than the app uses; only OpenAI is needed.
